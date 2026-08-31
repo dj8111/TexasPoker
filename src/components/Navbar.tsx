@@ -1,6 +1,7 @@
 import React from 'react';
 import { BookOpen, Grid, Zap, HelpCircle, Wrench, Brain, Share2, Globe } from 'lucide-react';
 import { Language, TRANSLATIONS } from '../i18n/translations';
+import { COURSE_CHAPTERS } from '../data/pokerData';
 
 export type TabType = 'course' | 'matrix' | 'drills' | 'quiz' | 'toolbox' | 'mental';
 
@@ -24,7 +25,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const t = TRANSLATIONS[lang];
 
   const tabs = [
-    { id: 'course', label: t.nav.course, icon: BookOpen, tag: `${completedLessonsCount}/5` },
+    { id: 'course', label: t.nav.course, icon: BookOpen, tag: `${completedLessonsCount}/${COURSE_CHAPTERS.length}` },
     { id: 'matrix', label: t.nav.matrix, icon: Grid, tag: 'GTO' },
     { id: 'drills', label: t.nav.drills, icon: Zap, tag: '5s' },
     { id: 'quiz', label: t.nav.quiz, icon: HelpCircle, tag: 'Quiz' },

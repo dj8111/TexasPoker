@@ -232,10 +232,10 @@ export const TRANSLATIONS: Record<Language, TranslationDict> = {
       close: '關閉'
     },
     course: {
-      badge: 'Tournament Curriculum',
+      badge: 'Masterclass Curriculum',
       progress: '進度',
-      title: '德州撲克錦標賽五階通關手冊',
-      desc: '從基礎底池賠率數學、100bb~8bb 籌碼深度切換，到翻後 GTO、泡沫期 ICM 壓迫及線下實戰 TDA 規程。',
+      title: '德州撲克大師階梯通關手冊（零基礎入門到進階實戰）',
+      desc: '專為零基礎到進階玩家打造：涵蓋 10 大牌型、四輪發牌流程、術語大字典、底池賠率、100bb~8bb 籌碼深度、翻後 GTO 與現場 TDA 規程。',
       completionRate: '學習完成率',
       syllabusTitle: '課綱章節一覽',
       readTime: '閱讀時間',
@@ -273,7 +273,7 @@ export const TRANSLATIONS: Record<Language, TranslationDict> = {
       suggestedAction: '建議行動：',
       execFreq: '執行頻率：',
       theoryEV: '理論期望值 (EV)：',
-      matrixTip: '💡 對角線為口袋對 (AA-22)，右上為同花 (Suited)，左下為雜色 (Offsuit)。'
+      matrixTip: '💡 新手小秘訣：對角線為口袋對 (AA-22)；右上角帶 s 為同花 (Suited，如 AKs)；左下角帶 o 為雜色 (Offsuit，如 AKo)。'
     },
     drills: {
       badge: '5-Second Speed Trainer',
@@ -417,10 +417,10 @@ export const TRANSLATIONS: Record<Language, TranslationDict> = {
       close: 'Close'
     },
     course: {
-      badge: 'Tournament Curriculum',
+      badge: 'Masterclass Curriculum',
       progress: 'Progress',
-      title: '5-Level Tournament Masterclass',
-      desc: 'From pot odds math and 100bb~8bb stack dynamics to postflop GTO, bubble ICM pressure, and live TDA regulations.',
+      title: 'Texas Hold\'em Masterclass (Beginner to Advanced)',
+      desc: 'Designed for beginners to advanced players: Covers 10 hand rankings, 4-street game flow, jargon glossary, pot odds math, GTO postflop, and tournament dynamics.',
       completionRate: 'Completion Rate',
       syllabusTitle: 'Syllabus Overview',
       readTime: 'Read Time',
@@ -458,7 +458,7 @@ export const TRANSLATIONS: Record<Language, TranslationDict> = {
       suggestedAction: 'Suggested Action: ',
       execFreq: 'Frequency: ',
       theoryEV: 'Theoretical EV: ',
-      matrixTip: '💡 Diagonal = Pocket Pairs (AA-22), Top-Right = Suited, Bottom-Left = Offsuit.'
+      matrixTip: '💡 Pro Tip: Diagonal = Pocket Pairs (AA-22); Top-Right with "s" = Suited (e.g. AKs); Bottom-Left with "o" = Offsuit (e.g. AKo).'
     },
     drills: {
       badge: '5-Second Speed Trainer',
@@ -602,10 +602,10 @@ export const TRANSLATIONS: Record<Language, TranslationDict> = {
       close: '关闭'
     },
     course: {
-      badge: 'Tournament Curriculum',
+      badge: 'Masterclass Curriculum',
       progress: '进度',
-      title: '德州扑克锦标赛五阶通关手册',
-      desc: '从基础底池赔率数学、100bb~8bb 筹码深度切换，到翻后 GTO、泡沫期 ICM 压迫及线下实战 TDA 规程。',
+      title: '德州扑克大师阶梯通关手册（零基础入门到进阶实战）',
+      desc: '专为零基础到进阶玩家打造：涵盖 10 大牌型、四轮发牌流程、术语大字典、底池赔率、100bb~8bb 筹码深度、翻后 GTO 与现场 TDA 规程。',
       completionRate: '学习完成率',
       syllabusTitle: '课纲章节一览',
       readTime: '阅读时间',
@@ -643,7 +643,7 @@ export const TRANSLATIONS: Record<Language, TranslationDict> = {
       suggestedAction: '建议行动：',
       execFreq: '执行频率：',
       theoryEV: '理论期望值 (EV)：',
-      matrixTip: '💡 对角线为口袋对 (AA-22)，右上为同花 (Suited)，左下为杂色 (Offsuit)。'
+      matrixTip: '💡 新手小秘诀：对角线为口袋对 (AA-22)；右上角带 s 为同花 (Suited，如 AKs)；左下角带 o 为杂色 (Offsuit，如 AKo)。'
     },
     drills: {
       badge: '5-Second Speed Trainer',
