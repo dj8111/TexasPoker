@@ -27,8 +27,17 @@ export const App: React.FC = () => {
     const saved = localStorage.getItem('poker_academy_completed_lessons');
     if (saved) {
       try {
-        return JSON.parse(saved);
-      } catch (e) {}
+        const parsed = JSON.parse(saved);
+        // 安全驗證：確保解析結果是字串陣列，防止惡意 localStorage 注入
+        if (Array.isArray(parsed) && parsed.every((item) => typeof item === 'string')) {
+          return parsed;
+        }
+        // 型別不符時清除損毀的資料
+        localStorage.removeItem('poker_academy_completed_lessons');
+      } catch (e) {
+        // JSON 解析失敗時清除損毀的資料
+        localStorage.removeItem('poker_academy_completed_lessons');
+      }
     }
     return ['lvl1-pot-odds'];
   });

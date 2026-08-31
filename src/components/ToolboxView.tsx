@@ -16,6 +16,25 @@ interface ToolboxViewProps {
   lang: Language;
 }
 
+// 每一盲注級別的時長（秒）
+const LEVEL_DURATION_SEC = 900; // 15 分鐘
+
+/** 驗證 localStorage 讀出的 MTT 記錄是否符合安全格式 */
+function isValidTournamentRecords(data: unknown): data is TournamentRecord[] {
+  if (!Array.isArray(data)) return false;
+  return data.every(
+    (r) =>
+      r !== null &&
+      typeof r === 'object' &&
+      typeof r.id === 'string' &&
+      typeof r.name === 'string' &&
+      typeof r.date === 'string' &&
+      typeof r.buyIn === 'number' &&
+      typeof r.payout === 'number' &&
+      typeof r.itm === 'boolean'
+  );
+}
+
 export const ToolboxView: React.FC<ToolboxViewProps> = ({ lang }) => {
   const t = TRANSLATIONS[lang].toolbox;
   const [activeTool, setActiveTool] = useState<'odds' | 'spr' | 'tracker' | 'clock'>('odds');
@@ -38,8 +57,17 @@ export const ToolboxView: React.FC<ToolboxViewProps> = ({ lang }) => {
     const saved = localStorage.getItem('poker_academy_mtt_records');
     if (saved) {
       try {
-        return JSON.parse(saved);
-      } catch (e) {}
+        const parsed = JSON.parse(saved);
+        // 安全驗證：檢查資料結構是否正確，防止惡意修改 localStorage
+        if (isValidTournamentRecords(parsed)) {
+          return parsed;
+        }
+        // 結構不符時清除損毀的資料
+        localStorage.removeItem('poker_academy_mtt_records');
+      } catch (e) {
+        // JSON 解析失敗時清除損毀的資料
+        localStorage.removeItem('poker_academy_mtt_records');
+      }
     }
     return [
       { id: '1', name: 'APT Taipei Warm-up', date: '2026-08-15', buyIn: 500, payout: 1850, itm: true },
@@ -58,14 +86,19 @@ export const ToolboxView: React.FC<ToolboxViewProps> = ({ lang }) => {
 
   const handleAddRecord = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!tourName || !tourBuyIn) return;
+    const trimmedName = tourName.trim();
+    if (!trimmedName || !tourBuyIn) return;
 
     const buyInNum = parseFloat(tourBuyIn) || 0;
     const payoutNum = parseFloat(tourPayout) || 0;
 
+    // 資安防護：窍計們實際的預期範圍
+    if (buyInNum < 0 || buyInNum > 10_000_000) return;
+    if (payoutNum < 0 || payoutNum > 100_000_000) return;
+
     const newRec: TournamentRecord = {
       id: Date.now().toString(),
-      name: tourName,
+      name: trimmedName,
       date: new Date().toISOString().split('T')[0],
       buyIn: buyInNum,
       payout: payoutNum,
@@ -99,7 +132,7 @@ export const ToolboxView: React.FC<ToolboxViewProps> = ({ lang }) => {
     { level: 6, sb: 1500, bb: 3000, ante: 3000 }
   ];
   const [levelIndex, setLevelIndex] = useState(0);
-  const [secondsLeft, setSecondsLeft] = useState(900);
+  const [secondsLeft, setSecondsLeft] = useState(LEVEL_DURATION_SEC);
   const [isClockRunning, setIsClockRunning] = useState(false);
   const clockIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -109,7 +142,7 @@ export const ToolboxView: React.FC<ToolboxViewProps> = ({ lang }) => {
         setSecondsLeft((prev) => {
           if (prev <= 1) {
             setLevelIndex((idx) => (idx + 1 < BLIND_LEVELS.length ? idx + 1 : idx));
-            return 900;
+            return LEVEL_DURATION_SEC;
           }
           return prev - 1;
         });
@@ -393,6 +426,7 @@ export const ToolboxView: React.FC<ToolboxViewProps> = ({ lang }) => {
               placeholder={t.formName}
               value={tourName}
               onChange={(e) => setTourName(e.target.value)}
+              maxLength={100}
               style={{ padding: '10px 14px', borderRadius: '8px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-subtle)', color: '#fff' }}
             />
             <input
@@ -507,7 +541,7 @@ export const ToolboxView: React.FC<ToolboxViewProps> = ({ lang }) => {
             <button
               onClick={() => {
                 setIsClockRunning(false);
-                setSecondsLeft(900);
+                setSecondsLeft(LEVEL_DURATION_SEC);
               }}
               className="btn-secondary"
             >

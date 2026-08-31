@@ -13,11 +13,13 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, lang })
   const t = TRANSLATIONS[lang].shareModal;
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [copied, setCopied] = useState(false);
+  const [qrError, setQrError] = useState(false);
 
   const currentUrl = typeof window !== 'undefined' ? window.location.href : 'https://poker-pro-academy.local';
 
   useEffect(() => {
     if (isOpen && canvasRef.current) {
+      setQrError(false);
       QRCode.toCanvas(
         canvasRef.current,
         currentUrl,
@@ -30,7 +32,10 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, lang })
           }
         },
         (error) => {
-          if (error) console.error('Error generating QR code', error);
+          if (error) {
+            console.error('Error generating QR code', error);
+            setQrError(true);
+          }
         }
       );
     }
@@ -185,7 +190,13 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, lang })
               display: 'inline-block'
             }}
           >
-            <canvas ref={canvasRef} style={{ display: 'block', borderRadius: '4px' }} />
+            {qrError ? (
+              <div style={{ width: 180, height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444', fontSize: '0.8rem', textAlign: 'center', padding: '8px' }}>
+                QR Code 生成失敗<br />請手動複製連結
+              </div>
+            ) : (
+              <canvas ref={canvasRef} style={{ display: 'block', borderRadius: '4px' }} />
+            )}
           </div>
           <div style={{ marginTop: '12px', textAlign: 'center' }}>
             <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#34d399' }}>
@@ -211,6 +222,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({ isOpen, onClose, lang })
                   href={item.url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  referrerPolicy="no-referrer"
                   style={{
                     display: 'flex',
                     alignItems: 'center',

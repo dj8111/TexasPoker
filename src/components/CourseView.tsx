@@ -2,11 +2,53 @@ import React, { useState } from 'react';
 import { COURSE_CHAPTERS } from '../data/pokerData';
 import { CheckCircle, Clock, ChevronRight, Sparkles } from 'lucide-react';
 import { Language, TRANSLATIONS } from '../i18n/translations';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
 
 interface CourseViewProps {
   completedLessons: string[];
   toggleLessonComplete: (id: string) => void;
   lang: Language;
+}
+
+/**
+ * 將課程文本轉換為富文本 HTML，支援專業 KaTeX 數學公式解析與排版。
+ */
+function renderCourseContent(raw: string): string {
+  // 1. 處理獨立區塊數學公式 $$...$$
+  let result = raw.replace(/\$\$(.*?)\$\$/gs, (_match, formula) => {
+    try {
+      const rendered = katex.renderToString(formula.trim(), {
+        displayMode: true,
+        throwOnError: false,
+      });
+      return `<div class="katex-display-wrapper" style="overflow-x:auto;padding:16px 24px;margin:20px 0;background:rgba(15,23,42,0.7);border-radius:12px;border:1px solid rgba(16,185,129,0.35);text-align:center;box-shadow:0 8px 24px rgba(0,0,0,0.3);">${rendered}</div>`;
+    } catch {
+      return `<div style="padding:12px;color:#34d399;font-family:var(--font-mono);">${formula}</div>`;
+    }
+  });
+
+  // 2. 處理行內數學公式 $...$
+  result = result.replace(/\$([^\$\n]+?)\$/g, (_match, formula) => {
+    try {
+      return katex.renderToString(formula.trim(), {
+        displayMode: false,
+        throwOnError: false,
+      });
+    } catch {
+      return `<code style="background:rgba(6,182,212,0.1);color:#38bdf8;padding:2px 6px;border-radius:4px;font-family:var(--font-mono);">${formula}</code>`;
+    }
+  });
+
+  // 3. 處理 Markdown 標題、粗體、列表排版
+  result = result
+    .replace(/### (.*)/g, '<h3 style="font-size:1.3rem; margin-top:24px; margin-bottom:8px; color:#ffffff; font-weight:700;">$1</h3>')
+    .replace(/#### (.*)/g, '<h4 style="font-size:1.1rem; margin-top:16px; margin-bottom:6px; color:#34d399; font-weight:600;">$1</h4>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong style="color:#ffffff;">$1</strong>')
+    .replace(/^- (.*)/gm, '<li style="margin-left:20px;margin-bottom:6px;">$1</li>')
+    .replace(/^\d+\. (.*)/gm, '<li style="margin-left:20px;margin-bottom:6px;list-style-type:decimal;">$1</li>');
+
+  return result;
 }
 
 export const CourseView: React.FC<CourseViewProps> = ({ completedLessons, toggleLessonComplete, lang }) => {
@@ -182,11 +224,7 @@ export const CourseView: React.FC<CourseViewProps> = ({ completedLessons, toggle
               gap: '16px'
             }}
             dangerouslySetInnerHTML={{
-              __html: activeChapter.content
-                .replace(/### (.*)/g, '<h3 style="font-size:1.3rem; margin-top:24px; margin-bottom:8px; color:#ffffff; font-weight:700;">$1</h3>')
-                .replace(/#### (.*)/g, '<h4 style="font-size:1.1rem; margin-top:16px; margin-bottom:6px; color:#34d399; font-weight:600;">$1</h4>')
-                .replace(/\*\*(.*?)\*\*/g, '<strong style="color:#ffffff;">$1</strong>')
-                .replace(/- (.*)/g, '<li style="margin-left: 20px;">$1</li>')
+              __html: renderCourseContent(activeChapter.content)
             }}
           />
 
