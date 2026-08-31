@@ -11,7 +11,8 @@ const getBase = (): string => {
     const repoName = repo.split('/')[1];
     return `/${repoName}/`;
   }
-  return './';
+  // 在生產環境預設使用倉庫名子路徑，在本地 dev/preview 依然正常運作
+  return process.env.NODE_ENV === 'production' ? '/TexasPoker/' : './';
 };
 
 export default defineConfig({
