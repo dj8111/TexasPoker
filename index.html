@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <!--
+      Content Security Policy:
+      - default-src 'self': 預設只允許同源資源
+      - script-src 'self': 只允許同源腳本（Vite 打包後均為 self）
+      - style-src 'self' 'unsafe-inline' https://fonts.googleapis.com: 允許 Google Fonts 及 inline styles
+      - font-src 'self' https://fonts.gstatic.com: 允許 Google Fonts 字型檔
+      - img-src 'self' data:: 允許同源圖片及 base64 data URI（QR Code canvas toDataURL）
+      - connect-src 'self': 只允許同源 fetch/XHR
+      - object-src 'none': 禁止 Flash / plugin 類嵌入
+      - frame-ancestors 'none': 禁止被 iframe 嵌入（Clickjacking 防護）
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; frame-ancestors 'none';"
+    />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♠️</text></svg>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Poker Pro Academy | 德州撲克錦標賽專業訓練系統</title>
+    <meta name="description" content="專為通往 WSOP/WPT/APT 國際合規錦標賽打造的德州撲克專業學習平台，包含 GTO 翻前範圍、Push/Fold 殘局訓練器、賠率計算機與賽事戰略體系。" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Outfit:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/TexasPoker/assets/index-jKq2rlzW.js"></script>
+    <link rel="stylesheet" crossorigin href="/TexasPoker/assets/index-DU2Oy4sy.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+
